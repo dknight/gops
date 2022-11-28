@@ -21,11 +21,11 @@ The name **gops** is ambiguous:
 
 1. gops might mean 'go-operations' aka 'go-todolist'.
 2. gops might be [Gopink](https://en.wikipedia.org/wiki/Gopnik), which I like
-the more :).
+more 😀.
 
 ## Usage
 
-```sh
+```
 Usage of gops:
   -a    Display also done items.
   -c uint
