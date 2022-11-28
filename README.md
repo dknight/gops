@@ -1,6 +1,6 @@
 # gops
 
-The most simple terminal todo utility.
+The most simple terminal todo utility in the World.
 
 * Simple
 * Stupid
@@ -10,14 +10,14 @@ The most simple terminal todo utility.
 
 ## What? Why?
 
-Around the world there are tons of todo-like software. Why need to create
-anothe one? Because, I really need simple handy todo list in terminal.
-The software should be simple as much as possible and usable
-with only a few keystrokes.
+Around the World, there are tons of todo-like software. Why do we need to
+make another? Because I desperately need a simple, convenient to-do list
+in terminal. The software should be as simple as possible and usable with
+only a few keystrokes.
 
 ## gops?
 
-Name **gops** is ambiguous:
+The name **gops** is ambiguous:
 
 1. gops might mean 'go-operations' aka 'go-todolist'.
 2. gops might be [Gopink](https://en.wikipedia.org/wiki/Gopnik), which I like
@@ -54,7 +54,7 @@ gops -a
 ## Contribution
 
 Any help is appreciated. Found a bug, typo, inaccuracy, etc.? Please do
-not hesitate and make pull request or issue.
+not hesitate to make a pull request or file an issue.
 
 ## License
 
