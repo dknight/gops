@@ -13,18 +13,20 @@ import (
 const (
 	itemStatusDone = true
 	itemStatusTodo = false
-	itemMarkDone   = 10003 // checkmark
+	itemMarkDone   = 10003 // check mark
 	itemMarkTodo   = 32    // space
 )
 
 const dateFormat = time.RFC3339
 
+// Item represents a todo item.
 type Item struct {
 	Time   time.Time
 	Status bool
 	Task   string
 }
 
+// NewItem create a new todo item.
 func NewItem(tm time.Time, s bool, t string) *Item {
 	return &Item{
 		Time:   tm,
@@ -33,6 +35,7 @@ func NewItem(tm time.Time, s bool, t string) *Item {
 	}
 }
 
+// ListItems reads the todo items from file and returns them.
 func ListItems(rd io.Reader) ([]Item, error) {
 	items := make([]Item, 0, 10)
 	bs, err := os.ReadFile(rd.(*os.File).Name())
@@ -65,6 +68,8 @@ func ListItems(rd io.Reader) ([]Item, error) {
 	return items, nil
 }
 
+// FilterItemsByStatus filters the todo items by status completed
+// or incomplete.
 func FilterItemsByStatus(items []Item, status bool) []Item {
 	out := make([]Item, 0)
 	for _, item := range items {
@@ -75,6 +80,8 @@ func FilterItemsByStatus(items []Item, status bool) []Item {
 	return out
 }
 
+// CompleteItem sets the status of a todo item to complete and writes
+// it to file.
 func CompleteItem(i uint, items []Item, wr io.Writer) (*Item, error) {
 	fp, err := os.Create(wr.(*os.File).Name())
 	if err != nil {
@@ -89,10 +96,12 @@ func CompleteItem(i uint, items []Item, wr io.Writer) (*Item, error) {
 	return &items[i-1], nil
 }
 
+// Complete completes a todo item.
 func (item *Item) Complete() {
 	item.Status = !item.Status
 }
 
+// Save saves the todo item to file.
 func (item *Item) Save(wr io.Writer) error {
 	w := csv.NewWriter(wr)
 	slice := item.Slice()
@@ -107,6 +116,7 @@ func (item *Item) Save(wr io.Writer) error {
 	return nil
 }
 
+// Slice converts the todo item into slice.
 func (item *Item) Slice() []string {
 	s := make([]string, 3)
 	s[0] = item.Time.Format(dateFormat)
@@ -115,6 +125,7 @@ func (item *Item) Slice() []string {
 	return s
 }
 
+// BeautifulString returns string to output with colors.
 func (item *Item) BeautifulString(i int) string {
 	var mark []rune
 	if item.Status {

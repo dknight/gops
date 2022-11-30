@@ -10,6 +10,7 @@ const defaultStoreFileName = ".gops"
 var storeFileName = defaultStoreFileName
 var storeFileResolver = getStoreFile
 
+// getStoreFile resolves the file to store todo items on file system.
 func getStoreFile() (*os.File, error) {
 	home, err := os.UserConfigDir()
 	if err != nil {

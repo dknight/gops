@@ -1,5 +1,6 @@
 package main
 
+// Color contains some colors for terminal representation.
 var Color = struct {
 	Blue   string
 	Yellow string

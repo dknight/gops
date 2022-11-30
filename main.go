@@ -1,3 +1,4 @@
+// Package gops is the most simple terminal todo utility in the World.
 package main
 
 import (
