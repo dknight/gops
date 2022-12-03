@@ -15,7 +15,8 @@ func Test_getStoreFile(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	exp := fmt.Sprintf("%v%c%v", cfgDir, os.PathSeparator, defaultStoreFileName)
+	exp := fmt.Sprintf("%v%c%v%c%v", cfgDir, os.PathSeparator,
+		configDir, os.PathSeparator, storeFileName)
 	if fp.Name() != exp {
 		t.Error("Expected", exp, "got", fp.Name())
 	}
