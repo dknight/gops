@@ -47,6 +47,25 @@ gops -c 2
 gops -a
 ```
 
+### Some command-line usage examples
+
+Use different list rather than default.
+
+```sh
+gops -n "Make training at gym" -f lifestyle
+gops -n "Buy healthy food" -f training -f lifestyle
+
+gops -f lifestyle
+
+```
+
+Save and read to file with today's date.
+
+```sh
+gops -n "Today go to dentist" -f $(date +%Y-%m-%d)
+gops -f $(date +%Y-%m-%d)
+```
+
 ## Testing
 
 ```go test```
