@@ -31,7 +31,7 @@ Usage of gops:
   -c uint
         Number of the task to complete.
   -f string
-        File of stored todo items (default $HOME/.config/.gops)
+        File of stored todo items (default $HOME/.config/gops/default)
   -n string
         Set name of the new todo task.
 ```

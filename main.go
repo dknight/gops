@@ -21,7 +21,7 @@ func main() {
 	creat := flag.String("n", "", "Set name of the new todo task.")
 	compl := flag.Uint("c", 0, "Number of the task to complete.")
 	fname := flag.String("f", "", "File of stored todo items."+
-		" (default $HOME/.config/.gops)")
+		" (default $HOME/.config/gops/default)")
 	all := flag.Bool("a", false, "Display also done items.")
 	flag.Parse()
 
