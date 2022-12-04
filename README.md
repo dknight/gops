@@ -31,9 +31,10 @@ Usage of gops:
   -c uint
         Number of the task to complete.
   -f string
-        File of stored todo items (default $HOME/.config/gops/default)
+        File of stored todo items. (default $HOME/.config/gops/default)
   -n string
         Set name of the new todo task.
+  -t    Set list to today's date.
 ```
 
 ### Examples
@@ -62,8 +63,8 @@ gops -f lifestyle
 Save and read to file with today's date.
 
 ```sh
-gops -n "Today go to dentist" -f $(date +%Y-%m-%d)
-gops -f $(date +%Y-%m-%d)
+gops -t -n "Today go to dentist"
+gops -t
 ```
 
 ## Testing

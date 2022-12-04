@@ -23,10 +23,16 @@ func main() {
 	fname := flag.String("f", "", "File of stored todo items."+
 		" (default $HOME/.config/gops/default)")
 	all := flag.Bool("a", false, "Display also done items.")
+	today := flag.Bool("t", false, "Set list to today's date.")
 	flag.Parse()
 
 	if *fname != "" {
 		storeFileName = *fname
+	}
+
+	if *today {
+		t := time.Now()
+		storeFileName = t.Format("2006-01-02")
 	}
 
 	file, err := storeFileResolver()
