@@ -13,14 +13,9 @@ var storeFileResolver = getStoreFile
 
 // getStoreFile resolves the file to store todo items on file system.
 func getStoreFile() (*os.File, error) {
-	cfgDir, err := os.UserConfigDir()
-	if err != nil {
-		return nil, err
-	}
-	cfgPath := fmt.Sprintf("%v%c%v", cfgDir, os.PathSeparator, configDir)
-
-	_, err = os.Stat(cfgPath)
-	if os.IsNotExist(err) {
+	cfgPath := getConfigPath()
+	_, err := os.Stat(cfgPath)
+	if err != nil && os.IsNotExist(err) {
 		if err := os.Mkdir(cfgPath, 0755); err != nil {
 			return nil, err
 		}
@@ -32,4 +27,19 @@ func getStoreFile() (*os.File, error) {
 		return nil, err
 	}
 	return fp, nil
+}
+
+// getConfigPath gets config directory, on Linux usually $HOME/.congig
+func getConfigPath() string {
+	cfgDir, err := os.UserConfigDir()
+	if err != nil {
+		exitErr(err)
+	}
+	return fmt.Sprintf("%v%c%v", cfgDir, os.PathSeparator, configDir)
+}
+
+// getDefaultStoreFile gets default file to store items.
+func getDefaultStoreFile() string {
+	return fmt.Sprintf("%v%c%v", getConfigPath(),
+		os.PathSeparator, defaultFile)
 }

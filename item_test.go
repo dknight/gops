@@ -8,24 +8,37 @@ import (
 	"time"
 )
 
-var getTempFile = func() *os.File {
-	fp, err := os.CreateTemp("", "gopstodos")
+var tmpdefault = "gopsdefault"
+
+func getTempFile(suffix string) *os.File {
+	fp, err := os.CreateTemp(getTempDirPath(), suffix)
 	if err != nil {
 		log.Fatalln(err)
 	}
 	return fp
 }
 
+func getTempDirPath() string {
+	path := fmt.Sprintf("%v%c%v", os.TempDir(), os.PathSeparator, "gops")
+	_ = os.Mkdir(path, 0755)
+	return path
+}
+
 func TestSave(t *testing.T) {
+	fp := getTempFile(tmpdefault)
+	defer os.Remove(fp.Name())
+
 	item := NewItem(time.Unix(0, 0).UTC(), false, "hello")
-	err := item.Save(getTempFile())
+	err := item.Save(fp)
 	if err != nil {
 		t.Error("Cannot save item", item, err)
 	}
 }
 
-func TestListItems(t *testing.T) {
-	testfile := getTempFile()
+func TestAllItems(t *testing.T) {
+	fp := getTempFile(tmpdefault)
+	defer os.Remove(fp.Name())
+
 	tests := []string{
 		"hello",
 		"busybreezy",
@@ -33,9 +46,9 @@ func TestListItems(t *testing.T) {
 	}
 	for _, test := range tests {
 		item := NewItem(time.Unix(0, 0).UTC(), false, test)
-		item.Save(testfile)
+		item.Save(fp)
 	}
-	list, err := ListItems(testfile)
+	list, err := AllItems(fp)
 	if err != nil {
 		t.Error(err)
 	}
@@ -65,20 +78,22 @@ func TestFilterItemsByStatus(t *testing.T) {
 }
 
 func TestCompleteItem(t *testing.T) {
-	testfile := getTempFile()
+	fp := getTempFile(tmpdefault)
+	defer os.Remove(fp.Name())
+
 	item := NewItem(time.Unix(0, 0).UTC(), false, "Complete me!")
-	err := item.Save(testfile)
+	err := item.Save(fp)
 	if err != nil {
 		t.Error(err)
 	}
 	if item.Status {
 		t.Error("Expected", false, "got", item.Status)
 	}
-	items, err := ListItems(testfile)
+	items, err := AllItems(fp)
 	if err != nil {
 		t.Error(err)
 	}
-	CompleteItem(1, items, testfile)
+	CompleteItem(1, items, fp)
 	if item.Status {
 		t.Error("Expected", true, "got", item.Status)
 	}

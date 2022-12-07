@@ -32,6 +32,7 @@ Usage of gops:
         Number of the task to complete.
   -f string
         File of stored todo items. (default $HOME/.config/gops/default)
+  -l    Display todo-lists.
   -n string
         Set name of the new todo task.
   -t    Set list to today's date.

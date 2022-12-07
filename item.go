@@ -35,8 +35,8 @@ func NewItem(tm time.Time, s bool, t string) *Item {
 	}
 }
 
-// ListItems reads the todo items from file and returns them.
-func ListItems(rd io.Reader) ([]Item, error) {
+// AllItems reads the todo items from file and returns them.
+func AllItems(rd io.Reader) ([]Item, error) {
 	items := make([]Item, 0, 10)
 	bs, err := os.ReadFile(rd.(*os.File).Name())
 	if err != nil {

@@ -21,9 +21,10 @@ func main() {
 	creat := flag.String("n", "", "Set name of the new todo task.")
 	compl := flag.Uint("c", 0, "Number of the task to complete.")
 	fname := flag.String("f", "", "File of stored todo items."+
-		" (default $HOME/.config/gops/default)")
+		" (default "+getDefaultStoreFile()+")")
 	all := flag.Bool("a", false, "Display also done items.")
 	today := flag.Bool("t", false, "Set list to today's date.")
+	list := flag.Bool("l", false, "Display todo-lists.")
 	flag.Parse()
 
 	if *fname != "" {
@@ -39,7 +40,7 @@ func main() {
 	if err != nil {
 		exitErr(err)
 	}
-	items, err := ListItems(file)
+	items, err := AllItems(file)
 	if err != nil {
 		exitErr(err)
 	}
@@ -73,6 +74,11 @@ func main() {
 		exitSucces("There is no incomplete items, relax it is good for you.")
 	}
 
+	if *list {
+		DisplayLists(getConfigPath())
+		exitSucces("")
+	}
+
 	if !*all {
 		items = FilterItemsByStatus(items, false)
 	}
@@ -87,6 +93,8 @@ func exitErr(err error) {
 }
 
 func exitSucces(msg string) {
-	fmt.Println(msg)
+	if msg != "" {
+		fmt.Println(msg)
+	}
 	os.Exit(0)
 }
