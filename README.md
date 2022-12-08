@@ -31,11 +31,12 @@ Usage of gops:
   -c uint
         Number of the task to complete.
   -f string
-        File of stored todo items. (default $HOME/.config/gops/default)
+        File of stored todo items. (default /home/xdkn1ght/.config/gops/default)
   -l    Display todo-lists.
   -n string
         Set name of the new todo task.
   -t    Set list to today's date.
+  -v    Displays the version.
 ```
 
 ### Examples
@@ -54,8 +55,8 @@ gops -a
 Use different list rather than default.
 
 ```sh
-gops -n "Make training at gym" -f lifestyle
-gops -n "Buy healthy food" -f training -f lifestyle
+gops -n "Make training at gym" -f training
+gops -n "Buy healthy food" -f lifestyle
 
 gops -f lifestyle
 
