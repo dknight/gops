@@ -9,6 +9,8 @@ import (
 	"time"
 )
 
+const version = "1.0.4-rc1"
+
 var file *os.File
 
 const (
@@ -25,7 +27,13 @@ func main() {
 	all := flag.Bool("a", false, "Display also done items.")
 	today := flag.Bool("t", false, "Set list to today's date.")
 	list := flag.Bool("l", false, "Display todo-lists.")
+	ver := flag.Bool("v", false, "Displays the version")
 	flag.Parse()
+
+	if *ver {
+		fmt.Println(version)
+		exitSucces("")
+	}
 
 	if *fname != "" {
 		storeFileName = *fname
