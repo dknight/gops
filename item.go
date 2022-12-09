@@ -38,6 +38,8 @@ func NewItem(tm time.Time, s bool, t string) *Item {
 // AllItems reads the todo items from file and returns them.
 func AllItems(rd io.Reader) ([]Item, error) {
 	items := make([]Item, 0, 10)
+	// TODO: do not depend on *os.File, use switch or something else.
+	// Bad!
 	bs, err := os.ReadFile(rd.(*os.File).Name())
 	if err != nil {
 		return nil, err
@@ -83,6 +85,7 @@ func FilterItemsByStatus(items []Item, status bool) []Item {
 // CompleteItem sets the status of a todo item to complete and writes
 // it to file.
 func CompleteItem(i uint, items []Item, wr io.Writer) (*Item, error) {
+	// TODO: bad! same as line 41
 	fp, err := os.Create(wr.(*os.File).Name())
 	if err != nil {
 		return nil, err
