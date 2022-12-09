@@ -137,7 +137,7 @@ func (item *Item) BeautifulString(i int) string {
 		mark = []rune{itemMarkTodo}
 	}
 
-	return fmt.Sprintf("  %v#%v %d %v%s%v %v",
+	return fmt.Sprintf("  %v#%v %3d %v%s%v %v",
 		Color.Blue, Color.Nul,
 		i,
 		Color.Green, string(mark), Color.Nul,
