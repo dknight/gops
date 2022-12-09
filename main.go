@@ -9,8 +9,6 @@ import (
 	"time"
 )
 
-const version = "1.0.4-rc1"
-
 var file *os.File
 
 const (
