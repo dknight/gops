@@ -18,6 +18,7 @@ const (
 )
 
 const dateFormat = time.RFC3339
+const itemBeautifulFormat = "%v#%v%3d %v%s%v %v"
 
 // Item represents a todo item.
 type Item struct {
@@ -137,7 +138,7 @@ func (item *Item) BeautifulString(i int) string {
 		mark = []rune{itemMarkTodo}
 	}
 
-	return fmt.Sprintf("  %v#%v %3d %v%s%v %v",
+	return fmt.Sprintf(itemBeautifulFormat,
 		Color.Blue, Color.Nul,
 		i,
 		Color.Green, string(mark), Color.Nul,

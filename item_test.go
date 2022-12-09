@@ -102,7 +102,7 @@ func TestCompleteItem(t *testing.T) {
 func TestBeautifulString(t *testing.T) {
 	item := NewItem(time.Unix(0, 0).UTC(), false, "Beautify me!")
 	expFn := func(mark []rune) string {
-		return fmt.Sprintf("  %v#%v %3d %v%s%v %v",
+		return fmt.Sprintf(itemBeautifulFormat,
 			Color.Blue, Color.Nul,
 			1,
 			Color.Green, string(mark), Color.Nul,
