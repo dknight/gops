@@ -38,8 +38,8 @@ func getConfigPath() string {
 	return fmt.Sprintf("%v%c%v", cfgDir, os.PathSeparator, configDir)
 }
 
-// getDefaultStoreFile gets default file to store items.
-func getDefaultStoreFile() string {
+// getDefaultStoreFilePath gets default file to store items.
+func getDefaultStoreFilePath() string {
 	return fmt.Sprintf("%v%c%v", getConfigPath(),
 		os.PathSeparator, defaultFile)
 }

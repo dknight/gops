@@ -39,21 +39,12 @@ func NewItem(tm time.Time, s bool, t string) *Item {
 // AllItems reads the todo items from file and returns them.
 func AllItems(rd io.Reader) ([]Item, error) {
 	items := make([]Item, 0, 10)
-	// TODO: do not depend on *os.File, use switch or something else.
-	// Bad!
-	bs, err := os.ReadFile(rd.(*os.File).Name())
+	csvReader := csv.NewReader(rd)
+	records, err := csvReader.ReadAll()
 	if err != nil {
 		return nil, err
 	}
-	csvReader := csv.NewReader(bytes.NewReader(bs))
-	for {
-		rec, err := csvReader.Read()
-		if err == io.EOF {
-			break
-		}
-		if err != nil {
-			return nil, err
-		}
+	for _, rec := range records {
 		tim, err := time.Parse(dateFormat, rec[0])
 		if err != nil {
 			return nil, err
@@ -86,16 +77,18 @@ func FilterItemsByStatus(items []Item, status bool) []Item {
 // CompleteItem sets the status of a todo item to complete and writes
 // it to file.
 func CompleteItem(i uint, items []Item, wr io.Writer) (*Item, error) {
-	// TODO: bad! same as line 41
-	fp, err := os.Create(wr.(*os.File).Name())
-	if err != nil {
-		return nil, err
+	switch wr.(type) {
+	case *os.File:
+		err := wr.(*os.File).Truncate(0)
+		if err != nil {
+			return nil, err
+		}
+	case *bytes.Buffer:
+		wr.(*bytes.Buffer).Truncate(0)
 	}
-	defer fp.Close()
-
 	items[i-1].Complete()
 	for _, item := range items {
-		item.Save(fp)
+		item.Save(wr)
 	}
 	return &items[i-1], nil
 }
@@ -139,8 +132,6 @@ func (item *Item) BeautifulString(i int) string {
 	}
 
 	return fmt.Sprintf(itemBeautifulFormat,
-		Color.Blue, Color.Nul,
-		i,
-		Color.Green, string(mark), Color.Nul,
-		item.Task)
+		Color.Blue, Color.Nul, i,
+		Color.Green, string(mark), Color.Nul, item.Task)
 }

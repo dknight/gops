@@ -1,7 +1,8 @@
 package main
 
 import (
-	"os"
+	"bytes"
+	"io"
 	"testing"
 	"time"
 )
@@ -11,16 +12,16 @@ func TestDisplayList(t *testing.T) {
 		NewItem(time.Unix(0, 0).UTC(), false, "first"),
 		NewItem(time.Unix(0, 0).UTC(), false, "second"),
 	}
-	fp1 := getTempFile("todo1-")
-	fp2 := getTempFile("todo2-")
-	fp3 := getTempFile("todo3-")
-	defer os.Remove(fp1.Name())
-	defer os.Remove(fp2.Name())
-	defer os.Remove(fp3.Name())
+
+	bufs := []*bytes.Buffer{
+		getTestBuffer(),
+		getTestBuffer(),
+		getTestBuffer(),
+	}
 
 	for _, pair := range pairs {
 		pair.Complete()
-		pair.Save(fp1)
+		pair.Save(bufs[0])
 	}
 
 	for i, pair := range pairs {
@@ -28,19 +29,16 @@ func TestDisplayList(t *testing.T) {
 		if i == 0 {
 			pair.Complete()
 		}
-		pair.Save(fp2)
+		pair.Save(bufs[1])
 	}
 
 	pairs[0].Complete()
-	pairs[0].Save(fp3)
+	pairs[0].Save(bufs[2])
 
-	lists, err := AllLists(getTempDirPath())
-	if err != nil {
-		t.Error(err)
-	}
-	if len(lists) != 3 {
-		t.Error("Excepted", 3, "got", len(lists))
+	rds := make([]*bytes.Reader, len(bufs))
+	for i := 0; i < len(bufs); i++ {
+		rds[i] = bytes.NewReader(bufs[i].Bytes())
 	}
 
-	DisplayLists(getTempDirPath())
+	DisplayLists([]io.Reader{rds[0], rds[1], rds[2]})
 }

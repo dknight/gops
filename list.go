@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"io"
 	"os"
 )
 
@@ -13,46 +14,53 @@ type List struct {
 }
 
 // DisplayLists shows all lists.
-func DisplayLists(path string) {
-	lists, err := AllLists(path)
-	if err != nil {
-		exitErr(err)
-	}
-
-	for _, list := range lists {
-		fpath := fmt.Sprintf("%v%c%v", path, os.PathSeparator, list.Name())
-		fp, err := os.Open(fpath)
-		if err != nil {
-			exitErr(err)
-		}
-		defer fp.Close()
-
-		items, err := AllItems(fp)
+func DisplayLists(rds []io.Reader) {
+	for _, rd := range rds {
+		items, err := AllItems(rd)
 		if err != nil {
 			exitErr(err)
 		}
 
 		done := len(FilterItemsByStatus(items, itemStatusDone))
 		total := len(items)
+		name := "buffer" // TODO rename?
+		switch rd.(type) {
+		case *os.File:
+			name = rd.(*os.File).Name()
+		}
 		li := List{
 			Done:  done,
 			Total: total,
-			Name:  list.Name(),
+			Name:  name,
 		}
-		fmt.Printf("%s\n", li)
+		fmt.Println(li.BeautifulString())
 	}
 }
 
-// AllLists gets all lists.
-func AllLists(path string) ([]os.DirEntry, error) {
-	lists, err := os.ReadDir(path)
+func getListsByPath(path string) ([]io.Reader, error) {
+	files := make([]io.Reader, 0)
+	entries, err := os.ReadDir(path)
 	if err != nil {
-		exitErr(err)
+		return nil, err
 	}
-	return lists, nil
+	for _, entry := range entries {
+		typ := entry.Type()
+		if typ.IsRegular() {
+			info, err := entry.Info()
+			if err != nil {
+				return nil, err
+			}
+			file, err := os.Open(info.Name())
+			if err != nil {
+				return nil, err
+			}
+			files = append(files, file)
+		}
+	}
+	return files, nil
 }
 
-func (li List) String() string {
+func (li List) BeautifulString() string {
 	color := ""
 	switch {
 	case li.Done == 0:

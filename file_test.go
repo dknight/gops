@@ -24,10 +24,10 @@ func Test_getStoreFile(t *testing.T) {
 	}
 }
 
-func Test_getDefaultStoreFile(t *testing.T) {
+func Test_getDefaultStoreFilePath(t *testing.T) {
 	exp := fmt.Sprintf("%v%c%v", getConfigPath(),
 		os.PathSeparator, defaultFile)
-	if exp != getDefaultStoreFile() {
-		t.Error("Expected", exp, "got", getDefaultStoreFile())
+	if exp != getDefaultStoreFilePath() {
+		t.Error("Expected", exp, "got", getDefaultStoreFilePath())
 	}
 }
