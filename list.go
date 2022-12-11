@@ -1,4 +1,4 @@
-package main
+package gops
 
 import (
 	"fmt"
@@ -14,19 +14,22 @@ type List struct {
 }
 
 // DisplayLists shows all lists.
-func DisplayLists(rds []io.Reader) {
+func DisplayLists(rds []io.Reader) error {
 	for _, rd := range rds {
 		items, err := AllItems(rd)
 		if err != nil {
-			exitErr(err)
+			return err
 		}
 
 		done := len(FilterItemsByStatus(items, itemStatusDone))
 		total := len(items)
-		name := "buffer" // TODO rename?
+		var name string
+		// More cases might be in future.
 		switch rd.(type) {
 		case *os.File:
 			name = rd.(*os.File).Name()
+		default:
+			name = "buffer"
 		}
 		li := List{
 			Done:  done,
@@ -35,6 +38,7 @@ func DisplayLists(rds []io.Reader) {
 		}
 		fmt.Println(li.BeautifulString())
 	}
+	return nil
 }
 
 func getListsByPath(path string) ([]io.Reader, error) {
@@ -50,7 +54,8 @@ func getListsByPath(path string) ([]io.Reader, error) {
 			if err != nil {
 				return nil, err
 			}
-			file, err := os.Open(info.Name())
+			path := makeStoreFilePath(info.Name())
+			file, err := os.Open(path)
 			if err != nil {
 				return nil, err
 			}

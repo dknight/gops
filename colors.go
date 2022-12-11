@@ -1,4 +1,4 @@
-package main
+package gops
 
 // Color contains some colors for terminal representation.
 var Color = struct {

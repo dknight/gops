@@ -21,7 +21,7 @@ func main() {
 	creat := flag.String("n", "", "Set name of the new todo task.")
 	compl := flag.Uint("c", 0, "Number of the task to complete.")
 	fname := flag.String("f", "", "File of stored todo items."+
-		" (default "+getDefaultStoreFilePath()+")")
+		" (default "+gops.getDefaultStoreFilePath()+")")
 	all := flag.Bool("a", false, "Display also done items.")
 	today := flag.Bool("t", false, "Set list to today's date.")
 	list := flag.Bool("l", false, "Display todo-lists.")
@@ -34,30 +34,36 @@ func main() {
 	}
 
 	if *fname != "" {
-		storeFileName = *fname
+		gops.storeFileName = *fname
 	}
 
 	if *today {
 		t := time.Now()
-		storeFileName = t.Format("2006-01-02")
+		gops.storeFileName = t.Format("2006-01-02")
 	}
 
-	fp, err := storeFileResolver()
-	if err != nil {
-		exitErr(err)
-	}
-	items, err := AllItems(fp)
-	if err != nil {
-		exitErr(err)
-	}
-
+	fp, err := gops.getStoreFile()
 	if *creat != "" {
+		if err != nil {
+			fp, err = createStoreFile()
+			if err != nil {
+				exitErr(err)
+			}
+		}
 		item := NewItem(time.Now(), itemStatusTodo, *creat)
 		err := item.Save(fp)
 		if err != nil {
 			exitErr(err)
 		}
 		exitSucces(addedMsg)
+	}
+
+	if err != nil {
+		exitErr(err)
+	}
+	items, err := AllItems(fp)
+	if err != nil {
+		exitErr(err)
 	}
 
 	if *compl != 0 {
@@ -85,7 +91,10 @@ func main() {
 		if err != nil {
 			exitErr(err)
 		}
-		DisplayLists(lists)
+		err = DisplayLists(lists)
+		if err != nil {
+			exitErr(err)
+		}
 		exitSucces("")
 	}
 

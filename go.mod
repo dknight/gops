@@ -1,3 +1,3 @@
-module dknight/gops
+module github.com/dknight/gops
 
-go 1.18
+go 1.19

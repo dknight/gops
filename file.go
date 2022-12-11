@@ -1,15 +1,16 @@
-package main
+package gops
 
 import (
 	"fmt"
 	"os"
 )
 
-const defaultFile = "default"
-const configDir = "gops"
+const (
+	defaultFile = "default"
+	configDir   = "gops"
+)
 
 var storeFileName = defaultFile
-var storeFileResolver = getStoreFile
 
 // getStoreFile resolves the file to store todo items on file system.
 func getStoreFile() (*os.File, error) {
@@ -21,10 +22,25 @@ func getStoreFile() (*os.File, error) {
 		}
 	}
 
-	fpath := fmt.Sprintf("%v%c%v", cfgPath, os.PathSeparator, storeFileName)
-	fp, err := os.OpenFile(fpath, os.O_CREATE|os.O_APPEND|os.O_RDWR, 0644)
+	fpath := makeStoreFilePath(storeFileName)
+	fp, err := os.OpenFile(fpath, os.O_APPEND|os.O_RDWR, 0644)
 	if err != nil {
 		return nil, err
+	}
+	return fp, nil
+}
+
+// createStoreFile create store file if not exists.
+func createStoreFile() (*os.File, error) {
+	var fp *os.File
+	fpath := makeStoreFilePath(storeFileName)
+	_, err := os.Stat(fpath)
+	if err != nil && os.IsNotExist(err) {
+		fp, err := os.Create(fpath)
+		if err != nil {
+			return nil, err
+		}
+		defer fp.Close()
 	}
 	return fp, nil
 }
@@ -33,13 +49,18 @@ func getStoreFile() (*os.File, error) {
 func getConfigPath() string {
 	cfgDir, err := os.UserConfigDir()
 	if err != nil {
-		exitErr(err)
+		return ""
 	}
 	return fmt.Sprintf("%v%c%v", cfgDir, os.PathSeparator, configDir)
 }
 
+// makeStoreFilePath makes path to store file.
+func makeStoreFilePath(name string) string {
+	cfgPath := getConfigPath()
+	return fmt.Sprintf("%v%c%v", cfgPath, os.PathSeparator, name)
+}
+
 // getDefaultStoreFilePath gets default file to store items.
 func getDefaultStoreFilePath() string {
-	return fmt.Sprintf("%v%c%v", getConfigPath(),
-		os.PathSeparator, defaultFile)
+	return makeStoreFilePath(defaultFile)
 }

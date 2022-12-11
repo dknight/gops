@@ -1,4 +1,4 @@
-package main
+package gops
 
 import (
 	"bytes"
@@ -40,5 +40,8 @@ func TestDisplayList(t *testing.T) {
 		rds[i] = bytes.NewReader(bufs[i].Bytes())
 	}
 
-	DisplayLists([]io.Reader{rds[0], rds[1], rds[2]})
+	err := DisplayLists([]io.Reader{rds[0], rds[1], rds[2]})
+	if err != nil {
+		t.Error(err)
+	}
 }
