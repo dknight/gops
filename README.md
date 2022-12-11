@@ -23,7 +23,7 @@ The name **gops** is ambiguous:
 2. gops might be [Gopink](https://en.wikipedia.org/wiki/Gopnik), which I like
 more 😀.
 
-## Usage
+## ClI Usage
 
 ```
 Usage of gops:
@@ -39,18 +39,24 @@ Usage of gops:
   -v    Displays the version.
 ```
 
-### Examples
+### Make a new item
 
 ```sh
 gops -n "Make a soup"
 gops -n "Drink beer and eat semki"
+```
 
+### Complete an item
+```
 gops -c 2
+```
 
+### List all items completed and incompleted
+```
 gops -a
 ```
 
-### Some command-line usage examples
+### Some cli usage examples
 
 Use different list rather than default.
 
