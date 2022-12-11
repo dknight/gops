@@ -1,3 +1,3 @@
 package gops
 
-const version = "1.0.4-rc5"
+const Version = "1.0.4"
