@@ -1,4 +1,4 @@
-module github.com/dknight/gops/gops-cli
+module github.com/dknight/gops/gops
 
 go 1.19
 
