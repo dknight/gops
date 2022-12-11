@@ -23,7 +23,16 @@ The name **gops** is ambiguous:
 2. gops might be [Gopink](https://en.wikipedia.org/wiki/Gopnik), which I like
 more 😀.
 
-## ClI Usage
+
+## Install
+
+A command tool `gops` will be built into `$GOPATH/bin/`.
+
+```
+go install github.com/dknight/gops/...
+```
+
+## ClI usage
 
 ```
 Usage of gops:
