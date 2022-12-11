@@ -11,10 +11,11 @@ import (
 )
 
 const (
-	itemStatusDone = true
-	itemStatusTodo = false
-	itemMarkDone   = 10003 // check mark
-	itemMarkTodo   = 32    // space
+	ItemStatusDone = true
+	ItemStatusTodo = false
+	// unexported
+	itemMarkDone = 10003 // check mark
+	itemMarkTodo = 32    // space
 )
 
 const dateFormat = time.RFC3339

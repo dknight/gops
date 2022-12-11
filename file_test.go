@@ -6,8 +6,8 @@ import (
 	"testing"
 )
 
-func Test_getStoreFile(t *testing.T) {
-	fp, err := getStoreFile()
+func TestGetStoreFile(t *testing.T) {
+	fp, err := GetStoreFile()
 	if err != nil {
 		t.Error(err)
 	}
@@ -24,10 +24,36 @@ func Test_getStoreFile(t *testing.T) {
 	}
 }
 
-func Test_getDefaultStoreFilePath(t *testing.T) {
-	exp := fmt.Sprintf("%v%c%v", getConfigPath(),
-		os.PathSeparator, defaultFile)
-	if exp != getDefaultStoreFilePath() {
-		t.Error("Expected", exp, "got", getDefaultStoreFilePath())
+func TestGetDefaultStoreFilePath(t *testing.T) {
+	exp := fmt.Sprintf("%v%c%v", GetConfigPath(), os.PathSeparator,
+		defaultFile)
+	if exp != GetDefaultStoreFilePath() {
+		t.Error("Expected", exp, "got", GetDefaultStoreFilePath())
+	}
+}
+
+func TestDefaultFile(t *testing.T) {
+	if DefaultFile() != defaultFile {
+		t.Error("Expected", DefaultFile(), "got", defaultFile)
+	}
+}
+
+func TestConfigDir(t *testing.T) {
+	if ConfigDir() != configDir {
+		t.Error("Expected", ConfigDir(), "got", configDir)
+	}
+}
+
+func TestStoreFileName(t *testing.T) {
+	if StoreFileName() != storeFileName {
+		t.Error("Expected", StoreFileName(), "got", storeFileName)
+	}
+}
+
+func TestSetStoreFilename(t *testing.T) {
+	exp := "foo"
+	SetStoreFileName(exp)
+	if storeFileName != exp {
+		t.Error("Expected", exp, "got", storeFileName)
 	}
 }

@@ -8,7 +8,7 @@ import (
 	"os"
 	"time"
 
-	gops "github.com/dknight/gops"
+	"github.com/dknight/gops"
 )
 
 var file *os.File
@@ -23,7 +23,7 @@ func main() {
 	creat := flag.String("n", "", "Set name of the new todo task.")
 	compl := flag.Uint("c", 0, "Number of the task to complete.")
 	fname := flag.String("f", "", "File of stored todo items."+
-		" (default "+gops.getDefaultStoreFilePath()+")")
+		" (default "+gops.GetDefaultStoreFilePath()+")")
 	all := flag.Bool("a", false, "Display also done items.")
 	today := flag.Bool("t", false, "Set list to today's date.")
 	list := flag.Bool("l", false, "Display todo-lists.")
@@ -36,23 +36,23 @@ func main() {
 	}
 
 	if *fname != "" {
-		gops.storeFileName = *fname
+		gops.SetStoreFileName(*fname)
 	}
 
 	if *today {
 		t := time.Now()
-		gops.storeFileName = t.Format("2006-01-02")
+		gops.SetStoreFileName(t.Format("2006-01-02"))
 	}
 
-	fp, err := gops.getStoreFile()
+	fp, err := gops.GetStoreFile()
 	if *creat != "" {
 		if err != nil {
-			fp, err = gops.createStoreFile()
+			fp, err = gops.CreateStoreFile()
 			if err != nil {
 				exitErr(err)
 			}
 		}
-		item := gops.NewItem(time.Now(), itemStatusTodo, *creat)
+		item := gops.NewItem(time.Now(), gops.ItemStatusTodo, *creat)
 		err := item.Save(fp)
 		if err != nil {
 			exitErr(err)
@@ -89,11 +89,11 @@ func main() {
 	}
 
 	if *list {
-		lists, err := gops.getListsByPath(gops.getConfigPath())
+		lists, err := gops.GetListsByPath(gops.GetConfigPath())
 		if err != nil {
 			exitErr(err)
 		}
-		err = DisplayLists(lists)
+		err = gops.DisplayLists(lists)
 		if err != nil {
 			exitErr(err)
 		}

@@ -21,7 +21,7 @@ func DisplayLists(rds []io.Reader) error {
 			return err
 		}
 
-		done := len(FilterItemsByStatus(items, itemStatusDone))
+		done := len(FilterItemsByStatus(items, ItemStatusDone))
 		total := len(items)
 		var name string
 		// More cases might be in future.
@@ -41,7 +41,7 @@ func DisplayLists(rds []io.Reader) error {
 	return nil
 }
 
-func getListsByPath(path string) ([]io.Reader, error) {
+func GetListsByPath(path string) ([]io.Reader, error) {
 	files := make([]io.Reader, 0)
 	entries, err := os.ReadDir(path)
 	if err != nil {
@@ -54,7 +54,7 @@ func getListsByPath(path string) ([]io.Reader, error) {
 			if err != nil {
 				return nil, err
 			}
-			path := makeStoreFilePath(info.Name())
+			path := MakeStoreFilePath(info.Name())
 			file, err := os.Open(path)
 			if err != nil {
 				return nil, err
