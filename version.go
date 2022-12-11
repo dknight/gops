@@ -1,3 +1,7 @@
 package gops
 
-const Version = "1.0.4"
+const version = "1.0.4"
+
+func Version() {
+	return version
+}
