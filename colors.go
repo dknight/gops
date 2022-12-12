@@ -14,3 +14,12 @@ var Color = struct {
 	Red:    "\033[91m",
 	Nul:    "\033[0m",
 }
+
+// ResolveDoneColor gets the done item color.
+func ResolveDoneColor(st bool) string {
+	if st {
+		return Color.Green
+	} else {
+		return Color.Nul
+	}
+}

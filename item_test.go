@@ -88,8 +88,8 @@ func TestBeautifulString(t *testing.T) {
 		return fmt.Sprintf(itemBeautifulFormat,
 			Color.Blue, Color.Nul,
 			1,
-			Color.Green, string(mark), Color.Nul,
-			item.Task)
+			Color.Green, string(mark), ResolveDoneColor(item.Status),
+			item.Task, Color.Nul)
 	}
 	expected := expFn([]rune{itemMarkTodo})
 	s := item.BeautifulString(1)

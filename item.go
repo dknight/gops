@@ -19,7 +19,7 @@ const (
 )
 
 const dateFormat = time.RFC3339
-const itemBeautifulFormat = "%v#%v%3d %v%s%v %v"
+const itemBeautifulFormat = "%v#%v%3d %v%s%v %v%v"
 
 // Item represents a todo item.
 type Item struct {
@@ -134,5 +134,6 @@ func (item *Item) BeautifulString(i int) string {
 
 	return fmt.Sprintf(itemBeautifulFormat,
 		Color.Blue, Color.Nul, i,
-		Color.Green, string(mark), Color.Nul, item.Task)
+		Color.Green, string(mark), ResolveDoneColor(item.Status),
+		item.Task, Color.Nul)
 }
