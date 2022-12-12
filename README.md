@@ -36,7 +36,6 @@ go install github.com/dknight/gops/...
 
 ```
 Usage of gops:
-  -a    Display also done items.
   -c uint
         Number of the task to complete.
   -f string
@@ -45,7 +44,8 @@ Usage of gops:
   -n string
         Set name of the new todo task.
   -t    Set list to today's date.
-  -v    Displays the version.
+  -u    Display only incomplete items.
+  -v    Displays the version
 ```
 
 ### Make a new item

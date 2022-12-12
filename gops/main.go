@@ -24,10 +24,10 @@ func main() {
 	compl := flag.Uint("c", 0, "Number of the task to complete.")
 	fname := flag.String("f", "", "File of stored todo items."+
 		" (default "+gops.GetDefaultStoreFilePath()+")")
-	all := flag.Bool("a", false, "Display also done items.")
 	today := flag.Bool("t", false, "Set list to today's date.")
 	list := flag.Bool("l", false, "Display todo-lists.")
 	ver := flag.Bool("v", false, "Displays the version")
+	undone := flag.Bool("u", false, "Display only incomplete items.")
 	flag.Parse()
 
 	if *ver {
@@ -100,8 +100,8 @@ func main() {
 		exitSucces("")
 	}
 
-	if !*all {
-		items = gops.FilterItemsByStatus(items, false)
+	if *undone {
+		items = gops.FilterItemsByStatus(items, gops.ItemStatusTodo)
 	}
 	for i, item := range items {
 		fmt.Println(item.BeautifulString(i + 1))
