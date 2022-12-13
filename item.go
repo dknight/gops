@@ -90,6 +90,7 @@ func CompleteItem(i uint, items []Item, wr io.Writer) (*Item, error) {
 		wr.(*bytes.Buffer).Truncate(0)
 	}
 	items[i-1].Complete()
+	// TODO: sort
 	for _, item := range items {
 		item.Save(wr)
 	}
