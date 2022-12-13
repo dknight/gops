@@ -51,8 +51,8 @@ func TestFilterItemsByStatus(t *testing.T) {
 	for k, v := range tests {
 		items = append(items, *NewItem(time.Unix(1, 0).UTC(), v, k))
 	}
-	incomeletedItems := FilterItemsByStatus(items, ItemStatusTodo)
-	completedItems := FilterItemsByStatus(items, ItemStatusDone)
+	incomeletedItems := FilterItemsByStatus(items, ItemStatusIncompleted)
+	completedItems := FilterItemsByStatus(items, ItemStatusCompleted)
 	if len(incomeletedItems) != 1 {
 		t.Error("Length expected", 1, "got", len(incomeletedItems))
 	}

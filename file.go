@@ -81,7 +81,7 @@ func StoreFileName() string {
 	return storeFileName
 }
 
-// SetStoreFilename set store file name where items are written.
+// SetStoreFileName set store file name where items are written.
 func SetStoreFileName(name string) {
 	storeFileName = name
 }

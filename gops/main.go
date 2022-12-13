@@ -1,4 +1,10 @@
 // Package gops is the most simple terminal todo utility in the World.
+// This is CLI implementation of gops for terminal.
+//
+// Check usage by command:
+//
+//	gops -h
+//
 package main
 
 import (
@@ -52,7 +58,7 @@ func main() {
 				exitErr(err)
 			}
 		}
-		item := gops.NewItem(time.Now(), gops.ItemStatusTodo, *creat)
+		item := gops.NewItem(time.Now(), gops.ItemStatusIncompleted, *creat)
 		err := item.Save(fp)
 		if err != nil {
 			exitErr(err)
@@ -101,7 +107,7 @@ func main() {
 	}
 
 	if *undone {
-		items = gops.FilterItemsByStatus(items, gops.ItemStatusTodo)
+		items = gops.FilterItemsByStatus(items, gops.ItemStatusIncompleted)
 	}
 	for i, item := range items {
 		fmt.Println(item.BeautifulString(i + 1))

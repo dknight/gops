@@ -11,8 +11,10 @@ import (
 )
 
 const (
-	ItemStatusDone = true
-	ItemStatusTodo = false
+	// ItemStatusCompleted identifies item as done.
+	ItemStatusCompleted = true
+	// ItemStatusIncompleted identifies item as incomplete..
+	ItemStatusIncompleted = false
 	// unexported
 	itemMarkDone = 10003 // check mark
 	itemMarkTodo = 32    // space

@@ -32,7 +32,7 @@ A command tool `gops` will be built into `$GOPATH/bin/`.
 go install github.com/dknight/gops/...
 ```
 
-## ClI usage
+## CLI usage
 
 ```
 Usage of gops:

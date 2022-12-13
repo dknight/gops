@@ -19,7 +19,6 @@ var Color = struct {
 func ResolveDoneColor(st bool) string {
 	if st {
 		return Color.Green
-	} else {
-		return Color.Nul
 	}
+	return Color.Nul
 }

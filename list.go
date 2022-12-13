@@ -6,11 +6,14 @@ import (
 	"os"
 )
 
-// List repsents lists.
+// List represents lists.
 type List struct {
-	Done  int
+	// Done counts completed items.
+	Done int
+	// Total counts total items.
 	Total int
-	Name  string
+	// Name is the name of the list (file).
+	Name string
 }
 
 // DisplayLists shows all lists.
@@ -21,7 +24,7 @@ func DisplayLists(rds []io.Reader) error {
 			return err
 		}
 
-		done := len(FilterItemsByStatus(items, ItemStatusDone))
+		done := len(FilterItemsByStatus(items, ItemStatusCompleted))
 		total := len(items)
 		var name string
 		// More cases might be in future.
@@ -41,6 +44,7 @@ func DisplayLists(rds []io.Reader) error {
 	return nil
 }
 
+// GetListsByPath gets all list by given path in file system.
 func GetListsByPath(path string) ([]io.Reader, error) {
 	files := make([]io.Reader, 0)
 	entries, err := os.ReadDir(path)
@@ -65,6 +69,7 @@ func GetListsByPath(path string) ([]io.Reader, error) {
 	return files, nil
 }
 
+// BeautifulString prints list as the beautiful string.
 func (li List) BeautifulString() string {
 	color := ""
 	switch {
