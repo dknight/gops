@@ -1,6 +1,3 @@
-// Package gops is the most simple terminal todo utility in the World.
-// This is CLI implementation of gops for terminal.
-//
 // Check usage by command:
 //
 //	gops -h
