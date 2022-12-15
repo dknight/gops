@@ -43,6 +43,7 @@ Usage of gops:
   -l    Display todo-lists.
   -n string
         Set name of the new todo task.
+  -s    Sort items by date and status.
   -t    Set list to today's date.
   -u    Display only incomplete items.
   -v    Displays the version
