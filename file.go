@@ -1,7 +1,9 @@
 package gops
 
 import (
+	"bytes"
 	"fmt"
+	"io"
 	"os"
 )
 
@@ -84,4 +86,19 @@ func StoreFileName() string {
 // SetStoreFileName set store file name where items are written.
 func SetStoreFileName(name string) {
 	storeFileName = name
+}
+
+// Truncate truncates writer, currently implemeted only file and buffer.
+func Truncate(wr io.Writer) error {
+	var err error
+	switch wr.(type) {
+	case *os.File:
+		err = wr.(*os.File).Truncate(0)
+		if err != nil {
+			return err
+		}
+	case *bytes.Buffer:
+		wr.(*bytes.Buffer).Truncate(0)
+	}
+	return err
 }

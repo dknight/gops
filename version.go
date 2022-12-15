@@ -6,5 +6,5 @@ package gops
 // Version gets the version of gops. Maybe do better structure
 // major, minor, patch.
 func Version() string {
-	return "1.0.10-rc5"
+	return "1.0.10"
 }

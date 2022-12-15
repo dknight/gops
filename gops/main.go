@@ -34,11 +34,12 @@ func main() {
 	list := flag.Bool("l", false, "Display todo-lists.")
 	ver := flag.Bool("v", false, "Displays the version")
 	undone := flag.Bool("u", false, "Display only incomplete items.")
+	sort := flag.Bool("s", false, "Sort items by date and status.")
 	flag.Parse()
 
 	if *ver {
 		fmt.Println(gops.Version())
-		exitSucces("")
+		exitSucces()
 	}
 
 	if *fname != "" {
@@ -94,6 +95,21 @@ func main() {
 		exitSucces("There is no incomplete items, relax it is good for you.")
 	}
 
+	if *sort {
+		var ans rune
+		fmt.Printf("Items will be sorted in %s."+
+			" You cannot revert thisoperation. [y/N]", fp.Name())
+		_, err := fmt.Fscanf(os.Stdin, "%c\n", &ans)
+		if err != nil {
+			exitErr(err)
+		}
+		if ans == 'y' || ans == 'Y' {
+			gops.SortItems(items, fp)
+		} else {
+			exitSucces()
+		}
+	}
+
 	if *list {
 		lists, err := gops.GetListsByPath(gops.GetConfigPath())
 		if err != nil {
@@ -103,7 +119,7 @@ func main() {
 		if err != nil {
 			exitErr(err)
 		}
-		exitSucces("")
+		exitSucces()
 	}
 
 	if *undone {
@@ -114,14 +130,18 @@ func main() {
 	}
 }
 
-func exitErr(err error) {
-	fmt.Println(err.Error())
+func exitErr(errs ...error) {
+	for _, e := range errs {
+		fmt.Println(e.Error())
+	}
 	os.Exit(1)
 }
 
-func exitSucces(msg string) {
-	if msg != "" {
-		fmt.Println(msg)
+func exitSucces(msgs ...string) {
+	for _, m := range msgs {
+		if m != "" {
+			fmt.Println(m)
+		}
 	}
 	os.Exit(0)
 }

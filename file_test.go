@@ -57,3 +57,42 @@ func TestSetStoreFilename(t *testing.T) {
 		t.Error("Expected", exp, "got", storeFileName)
 	}
 }
+
+func TestTruncate(t *testing.T) {
+	bf := getTestBuffer()
+	_, err := bf.Write([]byte{123, 32, 110})
+	if err != nil {
+		t.Error(err)
+	}
+	err = Truncate(bf)
+	if err != nil {
+		t.Error(err)
+	}
+	if bf.Len() != 0 {
+		t.Error("Expected", 0, "got", bf.Len())
+	}
+}
+
+func TestTruncate_File(t *testing.T) {
+	fp, err := os.CreateTemp("", "tmp")
+	if err != nil {
+		t.Error(err)
+	}
+	_, err = fp.Write([]byte{123, 32, 110})
+	if err != nil {
+		t.Error(err)
+	}
+	err = Truncate(fp)
+	if err != nil {
+		t.Error(err)
+	}
+
+	info, err := fp.Stat()
+	if err != nil {
+		t.Error(err)
+	}
+	size := info.Size()
+	if size != 0 {
+		t.Error("Expected", 0, "got", size)
+	}
+}

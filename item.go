@@ -1,11 +1,10 @@
 package gops
 
 import (
-	"bytes"
 	"encoding/csv"
 	"fmt"
 	"io"
-	"os"
+	"sort"
 	"strconv"
 	"time"
 )
@@ -80,17 +79,11 @@ func FilterItemsByStatus(items []Item, status bool) []Item {
 // CompleteItem sets the status of a todo item to complete and writes
 // it to file.
 func CompleteItem(i uint, items []Item, wr io.Writer) (*Item, error) {
-	switch wr.(type) {
-	case *os.File:
-		err := wr.(*os.File).Truncate(0)
-		if err != nil {
-			return nil, err
-		}
-	case *bytes.Buffer:
-		wr.(*bytes.Buffer).Truncate(0)
+	err := Truncate(wr)
+	if err != nil {
+		return nil, err
 	}
 	items[i-1].Complete()
-	// TODO: sort
 	for _, item := range items {
 		item.Save(wr)
 	}
@@ -139,4 +132,44 @@ func (item *Item) BeautifulString(i int) string {
 		Color.Blue, Color.Nul, i,
 		Color.Green, string(mark), ResolveDoneColor(item.Status),
 		item.Task, Color.Nul)
+}
+
+// I like long version of the sort, not closures.
+
+// ByStatusAndTime sorted by status and time.
+type ByStatusAndTime []Item
+
+func (its ByStatusAndTime) Len() int {
+	return len(its)
+}
+func (its ByStatusAndTime) Swap(i, j int) {
+	its[i], its[j] = its[j], its[i]
+}
+func (its ByStatusAndTime) Less(i, j int) bool {
+	var a, b int8
+	if its[i].Status {
+		a = 1
+	}
+	if its[j].Status {
+		b = 1
+	}
+
+	return its[i].Time.After(its[j].Time) && a <= b
+}
+
+// SortItems sorts the items.
+func SortItems(items []Item, wr io.Writer) error {
+	var err error
+	sort.Sort(ByStatusAndTime(items))
+	err = Truncate(wr)
+	if err != nil {
+		return err
+	}
+	for _, item := range items {
+		err = item.Save(wr)
+		if err != nil {
+			break
+		}
+	}
+	return err
 }
