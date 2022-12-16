@@ -46,7 +46,7 @@ Usage of gops:
   -s    Sort items by date and status.
   -t    Set list to today's date.
   -u    Display only incomplete items.
-  -v    Displays the version
+  -v    Displays the version.
 ```
 
 ### Make a new item

@@ -112,12 +112,8 @@ func TestSort(t *testing.T) {
 	item3 := NewItem(time.Unix(20, 0).UTC(), true, "Item 3 completed")
 	item4 := NewItem(time.Unix(30, 0).UTC(), true, "Item 4 completed")
 	item5 := NewItem(time.Unix(40, 0).UTC(), false, "Item 5 incompleted")
-	items := []Item{
-		*item1, *item2, *item3, *item4, *item5,
-	}
-	expectedItems := []Item{
-		*item5, *item1, *item4, *item3, *item2,
-	}
+	items := []Item{*item1, *item2, *item3, *item4, *item5}
+	expectedItems := []Item{*item1, *item5, *item4, *item3, *item2}
 	SortItems(items, bf)
 	if !reflect.DeepEqual(items, expectedItems) {
 		t.Error("Items are sorted in wrong order",

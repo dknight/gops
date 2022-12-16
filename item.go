@@ -134,33 +134,16 @@ func (item *Item) BeautifulString(i int) string {
 		item.Task, Color.Nul)
 }
 
-// I like long version of the sort, not closures.
-
-// ByStatusAndTime sorted by status and time.
-type ByStatusAndTime []Item
-
-func (its ByStatusAndTime) Len() int {
-	return len(its)
-}
-func (its ByStatusAndTime) Swap(i, j int) {
-	its[i], its[j] = its[j], its[i]
-}
-func (its ByStatusAndTime) Less(i, j int) bool {
-	var a, b int8
-	if its[i].Status {
-		a = 1
-	}
-	if its[j].Status {
-		b = 1
-	}
-
-	return its[i].Time.After(its[j].Time) && a <= b
-}
-
-// SortItems sorts the items.
+// SortItems sorts the items by date and the by status, completed items
+// are going to bottom.
 func SortItems(items []Item, wr io.Writer) error {
 	var err error
-	sort.Sort(ByStatusAndTime(items))
+	sort.Slice(items, func(i, j int) bool {
+		return items[i].Time.After(items[j].Time)
+	})
+	sort.Slice(items, func(i, j int) bool {
+		return !items[i].Status
+	})
 	err = Truncate(wr)
 	if err != nil {
 		return err

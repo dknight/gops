@@ -11,7 +11,7 @@
 //   -s    Sort items by date and status.
 //   -t    Set list to today's date.
 //   -u    Display only incomplete items.
-//   -v    Displays the version
+//   -v    Displays the version.
 package main
 
 import (
@@ -39,7 +39,7 @@ func main() {
 		" (default "+gops.GetDefaultStoreFilePath()+")")
 	today := flag.Bool("t", false, "Set list to today's date.")
 	list := flag.Bool("l", false, "Display todo-lists.")
-	ver := flag.Bool("v", false, "Displays the version")
+	ver := flag.Bool("v", false, "Displays the version.")
 	undone := flag.Bool("u", false, "Display only incomplete items.")
 	sort := flag.Bool("s", false, "Sort items by date and status.")
 	flag.Parse()
