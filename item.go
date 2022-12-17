@@ -121,17 +121,19 @@ func (item *Item) Slice() []string {
 
 // BeautifulString returns string to output with colors.
 func (item *Item) BeautifulString(i int) string {
-	var mark []rune
-	if item.Status {
-		mark = []rune{itemMarkDone}
-	} else {
-		mark = []rune{itemMarkTodo}
-	}
-
+	mark := item.GetMark()
 	return fmt.Sprintf(itemBeautifulFormat,
 		Color.Blue, Color.Nul, i,
 		Color.Green, string(mark), ResolveDoneColor(item.Status),
 		item.Task, Color.Nul)
+}
+
+// GetMark gets mark for completed or incompleted item.
+func (item *Item) GetMark() []rune {
+	if item.Status {
+		return []rune{itemMarkDone}
+	}
+	return []rune{itemMarkTodo}
 }
 
 // SortItems sorts the items by date and the by status, completed items

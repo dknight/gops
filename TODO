@@ -1,0 +1,2 @@
+OPTIONAL:
+Don't print color codes if terminal doesn't support colors.
