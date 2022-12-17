@@ -7,7 +7,7 @@ import (
 	"os"
 )
 
-const (
+var (
 	defaultFile = "default"
 	configDir   = "gops"
 )
@@ -47,13 +47,13 @@ func CreateStoreFile() (*os.File, error) {
 	return fp, nil
 }
 
-// GetConfigPath gets config directory, on Linux usually $HOME/.congig
+// GetConfigPath gets config directory, on Linux usually $HOME/.config
 func GetConfigPath() string {
-	cfgDir, err := os.UserConfigDir()
+	userCfgDir, err := os.UserConfigDir()
 	if err != nil {
 		return ""
 	}
-	return fmt.Sprintf("%v%c%v", cfgDir, os.PathSeparator, configDir)
+	return fmt.Sprintf("%v%c%v", userCfgDir, os.PathSeparator, configDir)
 }
 
 // MakeStoreFilePath makes path to store file.

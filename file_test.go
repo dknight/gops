@@ -52,7 +52,10 @@ func TestStoreFileName(t *testing.T) {
 
 func TestSetStoreFilename(t *testing.T) {
 	exp := "foo"
+	oldStoreFileName := storeFileName
 	SetStoreFileName(exp)
+	defer SetStoreFileName(oldStoreFileName)
+
 	if storeFileName != exp {
 		t.Error("Expected", exp, "got", storeFileName)
 	}
@@ -94,5 +97,12 @@ func TestTruncate_File(t *testing.T) {
 	size := info.Size()
 	if size != 0 {
 		t.Error("Expected", 0, "got", size)
+	}
+}
+
+func TestCreateStoreFile(t *testing.T) {
+	fp, err := CreateStoreFile()
+	if os.IsNotExist(err) {
+		t.Error("File", fp.Name(), "not exists")
 	}
 }

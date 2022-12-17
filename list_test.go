@@ -2,13 +2,17 @@ package gops
 
 import (
 	"bytes"
+	"fmt"
 	"io"
+	"math/rand"
+	"os"
+	"strconv"
 	"testing"
 	"time"
 )
 
 func TestDisplayList(t *testing.T) {
-	pairs := []*Item{
+	items := []*Item{
 		NewItem(time.Unix(0, 0).UTC(), false, "first"),
 		NewItem(time.Unix(0, 0).UTC(), false, "second"),
 	}
@@ -19,21 +23,21 @@ func TestDisplayList(t *testing.T) {
 		getTestBuffer(),
 	}
 
-	for _, pair := range pairs {
-		pair.Complete()
-		pair.Save(bufs[0])
+	for _, item := range items {
+		item.Complete()
+		item.Save(bufs[0])
 	}
 
-	for i, pair := range pairs {
-		pair.Complete()
+	for i, item := range items {
+		item.Complete()
 		if i == 0 {
-			pair.Complete()
+			item.Complete()
 		}
-		pair.Save(bufs[1])
+		item.Save(bufs[1])
 	}
 
-	pairs[0].Complete()
-	pairs[0].Save(bufs[2])
+	items[0].Complete()
+	items[0].Save(bufs[2])
 
 	rds := make([]*bytes.Reader, len(bufs))
 	for i := 0; i < len(bufs); i++ {
@@ -43,5 +47,35 @@ func TestDisplayList(t *testing.T) {
 	err := DisplayLists([]io.Reader{rds[0], rds[1], rds[2]})
 	if err != nil {
 		t.Error(err)
+	}
+}
+
+// FIXME maybe use tmp dir, it is better.
+func TestGetListsByPath(t *testing.T) {
+	rnd := strconv.Itoa(rand.Intn(100000000))
+	testFilePath := fmt.Sprintf("%v%c%v__%v", GetConfigPath(),
+		os.PathSeparator, "goptest", rnd)
+	fp, err := os.Create(testFilePath)
+	if err != nil {
+		t.Error(err)
+	}
+	defer os.Remove(fp.Name())
+
+	items := []*Item{
+		NewItem(time.Unix(0, 0).UTC(), false, "first"),
+		NewItem(time.Unix(0, 0).UTC(), false, "second"),
+	}
+
+	for _, item := range items {
+		item.Save(fp)
+	}
+
+	retrieved, err := GetListsByPath(GetConfigPath())
+	if err != nil {
+		t.Error(err)
+	}
+
+	if len(retrieved) < 1 {
+		t.Error("Expected at least", 1, "got", len(retrieved))
 	}
 }
