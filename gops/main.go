@@ -118,7 +118,7 @@ func main() {
 	}
 
 	if *list {
-		lists, err := gops.GetListsByPath(gops.GetConfigPath())
+		lists, err := gops.GetListsByPath(gops.GetSystemConfigPath())
 		if err != nil {
 			exitErr(err)
 		}

@@ -18,14 +18,14 @@ func TestGetStoreFile(t *testing.T) {
 	}
 
 	exp := fmt.Sprintf("%v%c%v%c%v", cfgDir, os.PathSeparator,
-		configDir, os.PathSeparator, storeFileName)
+		configDir, os.PathSeparator, StoreFileName())
 	if fp.Name() != exp {
 		t.Error("Expected", exp, "got", fp.Name())
 	}
 }
 
 func TestGetDefaultStoreFilePath(t *testing.T) {
-	exp := fmt.Sprintf("%v%c%v", GetConfigPath(), os.PathSeparator,
+	exp := fmt.Sprintf("%v%c%v", GetSystemConfigPath(), os.PathSeparator,
 		defaultFile)
 	if exp != GetDefaultStoreFilePath() {
 		t.Error("Expected", exp, "got", GetDefaultStoreFilePath())
@@ -45,19 +45,21 @@ func TestConfigDir(t *testing.T) {
 }
 
 func TestStoreFileName(t *testing.T) {
-	if StoreFileName() != storeFileName {
-		t.Error("Expected", StoreFileName(), "got", storeFileName)
+	exp := "xyzzy"
+	SetStoreFileName(exp)
+	if StoreFileName() != exp {
+		t.Error("Expected", exp, "got", StoreFileName())
 	}
 }
 
 func TestSetStoreFilename(t *testing.T) {
 	exp := "foo"
-	oldStoreFileName := storeFileName
+	oldStoreFileName := StoreFileName()
 	SetStoreFileName(exp)
 	defer SetStoreFileName(oldStoreFileName)
 
-	if storeFileName != exp {
-		t.Error("Expected", exp, "got", storeFileName)
+	if StoreFileName() != exp {
+		t.Error("Expected", exp, "got", StoreFileName())
 	}
 }
 

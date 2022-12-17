@@ -53,7 +53,7 @@ func TestDisplayList(t *testing.T) {
 // FIXME maybe use tmp dir, it is better.
 func TestGetListsByPath(t *testing.T) {
 	rnd := strconv.Itoa(rand.Intn(100000000))
-	testFilePath := fmt.Sprintf("%v%c%v__%v", GetConfigPath(),
+	testFilePath := fmt.Sprintf("%v%c%v__%v", GetSystemConfigPath(),
 		os.PathSeparator, "goptest", rnd)
 	fp, err := os.Create(testFilePath)
 	if err != nil {
@@ -70,7 +70,7 @@ func TestGetListsByPath(t *testing.T) {
 		item.Save(fp)
 	}
 
-	retrieved, err := GetListsByPath(GetConfigPath())
+	retrieved, err := GetListsByPath(GetSystemConfigPath())
 	if err != nil {
 		t.Error(err)
 	}
