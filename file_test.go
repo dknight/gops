@@ -45,8 +45,13 @@ func TestConfigDir(t *testing.T) {
 }
 
 func TestStoreFileName(t *testing.T) {
-	exp := "xyzzy"
+	exp := "xyzzy1"
+	oldStoreFileName := StoreFileName()
 	SetStoreFileName(exp)
+	defer func() {
+		SetStoreFileName(oldStoreFileName)
+		os.Remove(exp)
+	}()
 	if StoreFileName() != exp {
 		t.Error("Expected", exp, "got", StoreFileName())
 	}
