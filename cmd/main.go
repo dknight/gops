@@ -1,4 +1,4 @@
-// CLI for gops.
+// Command Line Interface (CLI) for gops.
 //
 // Usage of gops:
 //   -c uint
@@ -11,7 +11,7 @@
 //   -s    Sort items by date and status.
 //   -t    Set list to today's date.
 //   -u    Display only incomplete items.
-//   -v    Displays the version.
+//   -v    Displays the versionn
 package main
 
 import (
