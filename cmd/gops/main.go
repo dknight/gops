@@ -1,6 +1,6 @@
 // Command Line Interface (CLI) for gops.
 //
-//	go install github.com/dknight/gops/cmd@latest
+//	go install github.com/dknight/gops/cmd/gops@latest
 package main
 
 import (
