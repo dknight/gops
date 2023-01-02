@@ -1,17 +1,6 @@
 // Command Line Interface (CLI) for gops.
 //
-// Usage of gops:
-//   -c uint
-//         Number of the task to complete.
-//   -f string
-//         File of stored todo items. (default /home/xdkn1ght/.config/gops/default)
-//   -l    Display todo-lists.
-//   -n string
-//         Set name of the new todo task.
-//   -s    Sort items by date and status.
-//   -t    Set list to today's date.
-//   -u    Display only incomplete items.
-//   -v    Displays the versionn
+//	go install github.com/dknight/gops/cmd@latest
 package main
 
 import (
