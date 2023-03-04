@@ -87,7 +87,7 @@ func main() {
 		exitSucces(okMsg)
 	}
 
-	if len(items) == 0 {
+	if !*list && len(items) == 0 {
 		exitSucces("There is no incomplete items, relax it is good for you.")
 	}
 
